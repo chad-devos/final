@@ -1,0 +1,5 @@
+<h1>Stadiums I've Visited</h1>
+
+<% for stadium in @stadiums %>
+    <p><a href="/stadiums/<%= stadium[:id] %>"><%= stadium[:stadium_name] %></a></p>
+<% end %>
