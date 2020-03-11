@@ -5,31 +5,36 @@ DB = Sequel.connect(connection_string)                                          
 #######################################################################################
 
 # Database schema - this should reflect your domain model
-DB.create_table! :events do
+DB.create_table! :stadiums do
   primary_key :id
-  String :title
+  String :stadium_name
   String :description, text: true
-  String :date
   String :location
 end
-DB.create_table! :rsvps do
+DB.create_table! :reviews do
   primary_key :id
-  foreign_key :event_id
-  Boolean :going
-  String :name
-  String :email
+  foreign_key :stadiums_id
+  foreign_key :users_id
+  String :date_visited
+  String :date_reviewed
+  Integer :score
   String :comments, text: true
+end
+DB.create_table! :users do
+  primary_key :id
+  String :first_name
+  String :last_name
+  String :email
+  String :password
 end
 
 # Insert initial (seed) data
-events_table = DB.from(:events)
+stadiums_table = DB.from(:stadiums)
 
-events_table.insert(title: "Bacon Burger Taco Fest", 
-                    description: "Here we go again bacon burger taco fans, another Bacon Burger Taco Fest is here!",
-                    date: "June 21",
-                    location: "Kellogg Global Hub")
+stadiums_table.insert(stadium_name: "Petco Park", 
+                    description: "MLB stadium and concert venue. Home of the San Diego Padres",
+                    location: "San Diego, CA")
 
-events_table.insert(title: "Kaleapolooza", 
-                    description: "If you're into nutrition and vitamins and stuff, this is the event for you.",
-                    date: "July 4",
-                    location: "Nowhere")
+stadiums_table.insert(stadium_name: "Staples Center", 
+                    description: "NBA arena, NHL arena, and concert venue. Home of the Los Angeles Lakers, Los Angeles Clippers, and Los Angeles Kings",
+                    location: "Los Angeles, CA")
