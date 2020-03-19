@@ -1,5 +1,6 @@
 # Set up for the application and database. DO NOT CHANGE. #############################
-require "sequel"                                                                      #
+require "sequel"   
+require "bcrypt"                                                                      #
 connection_string = ENV['DATABASE_URL'] || "sqlite://#{Dir.pwd}/development.sqlite3"  #
 DB = Sequel.connect(connection_string)                                                #
 #######################################################################################
@@ -85,4 +86,4 @@ reviews_table.insert(stadiums_id: 5,
 users_table.insert(first_name: "Chad",
                 last_name: "DeVos",
                 email: "csdevos7@gmail.com",
-                password: "seedaccount")
+                password: BCrypt::Password.create("seedaccount"))

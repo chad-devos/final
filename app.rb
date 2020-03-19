@@ -40,5 +40,51 @@ get "/stadiums/:id" do
     view "stadium"
 end
 
+get "/users/new" do
+    view "new_user"
+end
+
+post "/users/create" do
+    puts "params: #{params}"
+
+    # if there's already a user with this email, skip!
+    existing_user = users_table.where(email: params["email"]).to_a[0]
+    if existing_user
+        view "error"
+    else
+        users_table.insert(
+            first_name: params["first name"],
+            last_name: params["last name"],
+            email: params["email"],
+            password: BCrypt::Password.create(params["password"])
+        )
+        redirect "/logins/new"
+    end
+end
+
+get "/logins/new" do
+    view "new_login"
+end
+
+post "/logins/create" do
+    puts "params: #{params}"
+
+    # step 1: user with the params["email"] ?
+    @user = users_table.where(email: params["email"]).to_a[0]
+
+    if @user
+        # step 2: if @user, does the encrypted password match?
+        if BCrypt::Password.new(@user[:password]) == params["password"]
+            # set encrypted cookie for logged in user
+            session["user_id"] = @user[:id]
+            redirect "/"
+        else
+            view "create_login_failed"
+        end
+    else
+        view "create_login_failed"
+    end
+end
+
 
 
