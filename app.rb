@@ -4,7 +4,8 @@ require "sinatra/reloader" if development?                                      
 require "sequel"                                                                      #
 require "logger"                                                                      #
 require "twilio-ruby"                                                                 #
-require "bcrypt"                                                                      #
+require "bcrypt"      
+require "geocoder"                                                                #
 connection_string = ENV['DATABASE_URL'] || "sqlite://#{Dir.pwd}/development.sqlite3"  #
 DB ||= Sequel.connect(connection_string)                                              #
 DB.loggers << Logger.new($stdout) unless DB.loggers.size > 0                          #
@@ -34,10 +35,17 @@ get "/stadiums/:id" do
     puts "params: #{params}"
 
     @stadium = stadiums_table.where(id: params[:id]).to_a[0]
+    results = Geocoder.search(@stadium[:location])
+    @lat_lng = results.first.coordinates
+    @lat = @lat_lng[0]
+    @lng = @lat_lng[1]
+    @lat_lng_final = "#{@lat},#{@lng}"
+
     @reviews = reviews_table.where(stadium_id: @stadium[:id])
     @users_table = users_table
     # using users_id: 1 as qualifier since new users cannot add stadiums, only reviews
-    @chad_review = reviews_table.where(users_id: 1, stadiums_id: @stadium[:id]).to_a[0]
+    @last_id = reviews_table.where(stadiums_id: @stadium[:id]).select { max(:id)}
+    @last_review = reviews_table.where(stadiums_id: @stadium[:id], id: @last_id).to_a[0]
     @count_reviews = reviews_table.where(stadiums_id: @stadium[:id]).select { count("*") }.to_a[0]
     @average_score = reviews_table.where(stadiums_id: @stadium[:id]).select { avg(:score) }.to_a[0]
 

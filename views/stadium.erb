@@ -4,9 +4,19 @@
         <h1><%= @stadium[:stadium_name] %></h1>
         <p><%= @stadium[:description] %></p>
 
-    <div class="mt-5">
-        <h3>Number of Reviews: <%= @count_reviews[:"count('*')"] %></h3>
-        <h3>Average Score: <%= @average_score[:"avg(`score`)"] %></h3>
+     <div class="container">
+      <iframe
+        width="300"
+        height="250"
+        frameborder="0" style="border:0"
+        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCtovsQvkIUWlNqtYwXY87gEd4ZSmJEhMw
+          &q=<%= @lat_lng_final %>&zoom=6" allowfullscreen>
+      </iframe>
+    </div>
+
+    <div>
+        <h4>Number of Reviews: <%= @count_reviews[:"count('*')"] %></h4>
+        <h4>Average Score: <%= @average_score[:"avg(`score`)"] %></h4>
     </div>
      <p class="mt-5">
             <% if @current_user %>
@@ -18,12 +28,12 @@
     </div>
 
     <div class="col-sm-4 mt-5">
-    <h2>Chad's Review</h2>
-    <h4>Date Visited: <%= @chad_review[:date_visited] %></h4>
+    <h2>Last Review</h2>
+    <h4>Date Visited: <%= @last_review[:date_visited] %></h4>
     
-    <h4>Chad's Score: <%= @chad_review[:score] %> </h4>
-    <h4>Chad's Comments: </h4>
-    <p><%= @chad_review[:comments] %></p>
+    <h4>Score: <%= @last_review[:score] %> </h4>
+    <h4>Comments: </h4>
+    <p><%= @last_review[:comments] %></p>
     </div>
 </div>
 
