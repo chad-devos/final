@@ -8,6 +8,13 @@
         <h3>Number of Reviews: <%= @count_reviews[:"count('*')"] %></h3>
         <h3>Average Score: <%= @average_score[:"avg(`score`)"] %></h3>
     </div>
+     <p class="mt-5">
+            <% if @current_user %>
+                <a href="/stadiums/<%= @stadium[:id] %>/reviews/new" class="btn btn-primary">Write a review!</a>
+            <% else %>
+                <a href="/logins/new" class="btn btn-danger">Please sign in to review</a>
+            <% end %>
+        </p>
     </div>
 
     <div class="col-sm-4 mt-5">

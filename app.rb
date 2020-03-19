@@ -18,6 +18,10 @@ stadiums_table = DB.from(:stadiums)
 reviews_table = DB.from(:reviews)
 users_table = DB.from(:users)
 
+before do
+    @current_user = users_table.where(id: session["user_id"]).to_a[0]
+end
+
 get "/" do
     puts stadiums_table.all
     puts "params: #{params}"
@@ -40,6 +44,30 @@ get "/stadiums/:id" do
     view "stadium"
 end
 
+get "/stadiums/:id/reviews/new" do
+    puts "params: #{params}"
+
+    @stadium = stadiums_table.where(id: params[:id]).to_a[0]
+    view "new_review"
+end
+
+post "/stadiums/:id/reviews/create" do
+    puts "params: #{params}"
+
+    # first find the event that rsvp'ing for
+    @stadium = stadiums_table.where(id: params[:id]).to_a[0]
+    # next we want to insert a row in the rsvps table with the rsvp form data
+    reviews_table.insert(
+        stadiums_id: @stadium[:id],
+        users_id: session["user_id"],
+        date_visited: params["date_visited"],
+        comments: params["comments"],
+        score: params["score"]
+    )
+
+    redirect "/stadiums/#{@stadium[:id]}"
+end
+
 get "/users/new" do
     view "new_user"
 end
@@ -53,8 +81,8 @@ post "/users/create" do
         view "error"
     else
         users_table.insert(
-            first_name: params["first name"],
-            last_name: params["last name"],
+            first_name: params["first_name"],
+            last_name: params["last_name"],
             email: params["email"],
             password: BCrypt::Password.create(params["password"])
         )
@@ -85,6 +113,13 @@ post "/logins/create" do
         view "create_login_failed"
     end
 end
+
+get "/logout" do
+    # remove encrypted cookie for logged out user
+    session["user_id"] = nil
+    redirect "/logins/new"
+end
+
 
 
 
