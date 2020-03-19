@@ -20,13 +20,25 @@ users_table = DB.from(:users)
 
 get "/" do
     puts stadiums_table.all
+    puts "params: #{params}"
+
     @stadiums = stadiums_table.all.to_a
     view "stadiums"
 end
 
 get "/stadiums/:id" do
+    puts "params: #{params}"
+
     @stadium = stadiums_table.where(id: params[:id]).to_a[0]
     @reviews = reviews_table.where(stadium_id: @stadium[:id])
     @users_table = users_table
+    # using users_id: 1 as qualifier since new users cannot add stadiums, only reviews
+    @chad_review = reviews_table.where(users_id: 1, stadiums_id: @stadium[:id]).to_a[0]
+    @count_reviews = reviews_table.where(stadiums_id: @stadium[:id]).select { count("*") }.to_a[0]
+    @average_score = reviews_table.where(stadiums_id: @stadium[:id]).select { avg(:score) }.to_a[0]
+
     view "stadium"
 end
+
+
+

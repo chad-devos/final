@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="col-sm-8">
+        
+        <h1><%= @stadium[:stadium_name] %></h1>
+        <p><%= @stadium[:description] %></p>
+
+    <div class="mt-5">
+        <h3>Number of Reviews: <%= @count_reviews[:"count('*')"] %></h3>
+        <h3>Average Score: <%= @average_score[:"avg(`score`)"] %></h3>
+    </div>
+    </div>
+
+    <div class="col-sm-4 mt-5">
+    <h2>Chad's Review</h2>
+    <h4>Date Visited: <%= @chad_review[:date_visited] %></h4>
+    
+    <h4>Chad's Score: <%= @chad_review[:score] %> </h4>
+    <h4>Chad's Comments: </h4>
+    <p><%= @chad_review[:comments] %></p>
+    </div>
+</div>
+
+
+
