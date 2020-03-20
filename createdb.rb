@@ -53,37 +53,3 @@ stadiums_table.insert(stadium_name: "Angel Stadium",
                     description: "MLB stadium and concert venue. Home of the Los Angeles Angels of Anaheim.",
                     location: "Anaheim, CA")
 
-reviews_table.insert(stadiums_id: 1,
-                    users_id: 1,
-                    date_visited: "June 29, 2019",
-                    Score: 9,
-                    Comments: "Great stadium, great food! Have visited many times and highly recommend.")
-
-reviews_table.insert(stadiums_id: 2,
-                    users_id: 1,
-                    date_visited: "December 30, 2014",
-                    Score: 7.5,
-                    Comments: "Went for a Laker's game and had a great experience. Feels like much more of a place to be seen than most sports venues.")
-
-reviews_table.insert(stadiums_id: 3,
-                    users_id: 1,
-                    date_visited: "October 11, 2010",
-                    Score: 9,
-                    Comments: "An amazing experience. Most enthusiastic fans I have ever been around. Made for a great time!")
-reviews_table.insert(stadiums_id: 4,
-                    users_id: 1,
-                    date_visited: "November 15, 2016",
-                    Score: 3,
-                    Comments: "Been for multiple events. The stadium is a concrete mess and should be torn down.")
-
-reviews_table.insert(stadiums_id: 5,
-                    users_id: 1,
-                    date_visited: "October 10, 2009",
-                    Score: 7,
-                    Comments: "The stadium itself is pretty nice, but not spectactular. Went for an Angel's playoff game which was great and full of energy.")
-
-
-users_table.insert(first_name: "Chad",
-                last_name: "DeVos",
-                email: "csdevos7@gmail.com",
-                password: BCrypt::Password.create("seedaccount"))
